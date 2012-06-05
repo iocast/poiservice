@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+    <ShortName>TagFinder</ShortName>
+    <Description>Find Tags and/or Values</Description>
+    <Tags>osm openstreetmap tag tags taginfo attribute finder</Tags>
+    <Contact>m1ott@hsr.ch</Contact>
+    <Url type="text/html" method="get" template="http://openpoimap.ch/tagfinder/search?q={searchTerms}"/>
+    <Image height="16" width="16" type="image/x-icon">http://openpoimap.ch/favicon.ico</Image>
+</OpenSearchDescription>

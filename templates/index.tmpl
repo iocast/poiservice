@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+		<title>OpenPOIMap - Geometa Lab HSR</title>
+		<link rel="icon" type="image/vnd.microsoft.icon" href="${path}/img/hsr.ico">
+		
+		<link rel="search" type="application/opensearchdescription+xml" href="${path}/templates/opensearch.xml" title="TagFinder" />
+		
+		<link rel="stylesheet" href="${path}/css/reset.css" type="text/css">
+		<link rel="stylesheet" href="${path}/css/common.css" type="text/css">
+		<link rel="stylesheet" href="${path}/css/layout.css" type="text/css">
+		<link rel="stylesheet" href="${path}/css/forms.css" type="text/css">
+
+		<script type="text/javascript" src="${path}/lib/js/jquery.min.js"></script>
+		<script type="text/javascript" src="${path}/lib/js/jquery-ui.custom.min.js"></script>
+		<link type="text/css" rel="stylesheet" href="${path}/lib/css/smoothness/jquery-ui.custom.css">
+
+		<script type="text/javascript" src="${path}/lib/js/jquery.stepy.min.js"></script>
+		<link type="text/css" rel="stylesheet" href="${path}/lib/css/jquery.stepy.css"/>
+		
+		<script type="text/javascript" src="${path}/lib/js/jquery.validate.min.js"></script>
+
+		<script type="text/javascript" src="${path}/lib/js/jquery.tmpl.min.js"></script>
+		
+		<link rel="stylesheet" href="${path}/lib/codemirror/lib/codemirror.css">
+		<script src="${path}/lib/codemirror/lib/codemirror.js"></script>
+		<script src="${path}/lib/codemirror/mode/xml/xml.js"></script>
+		<link rel="stylesheet" href="${path}/lib/codemirror/mode/xml/xml.css">
+
+		<script type="text/javascript" src="${path}/lib/js/beautifyxml.js"></script>
+
+		<script type="text/javascript" src="${path}/js/Class.js"></script>
+		<script type="text/javascript" src="${path}/js/Navigation.js"></script>
+		<script type="text/javascript" src="${path}/js/Filter.js"></script>
+		<script type="text/javascript" src="${path}/js/Utility.js"></script>
+
+
+ 		<style>
+	        .ui-autocomplete {
+	        	z-index:4000 !important     
+	        }
+	        
+	        .ui-autocomplete-category {
+	        	font-weight: bold;
+	        	padding: .2em .4em;
+	        	margin: .8em 0 .2em;
+	        	line-height: 1.5;
+	        }
+			.ui-autocomplete {
+				max-height: 300px;
+				overflow-y: auto;
+				/* prevent horizontal scrollbar */
+				overflow-x: hidden;
+				/* add padding to account for vertical scrollbar */
+				padding-right: 20px;
+			}
+		</style>
+
+		<script type="text/javascript" >
+			var IE = document.all?true:false
+			if (!IE) document.captureEvents(Event.MOUSEMOVE)
+			
+			document.onmousemove = getMouseXY;
+			var mouseX = 0;
+			var mouseY = 0;
+			
+			function getMouseXY(evt) {
+				if (IE) {
+					mouseX = event.clientX + document.body.scrollLeft;
+					mouseY = event.clientY + document.body.scrollTop;
+				} else {
+					mouseX = evt.pageX;
+					mouseY = evt.pageY;
+				}  
+			}
+
+#compiler-settings
+cheetahVarStartToken = @
+directiveStartToken = %
+#end compiler-settings
+
+			var basePath = '@{path}';
+			var FeatureServerURL = '@getFeatureServerURL()';
+			var FeatureServerLayer = '@{featureserver["layer"]}';
+			var FeatureServerWorkspaceURL = '@getFeatureServerWorkspaceURL()';
+			
+			var FeatureFilterURL = '@getFeatureFilterURL()';
+			var FeatureFilterBaseURL = '@getFeatureFilterBaseURL()';
+			var FeatureFilterLayer = '@{featurefilter["layer"]}';
+			var FeatureFilterServer = '@{featurefilter["server"]}';
+			
+			var lon = '@{params["lon"]}';
+			var lat = '@{params["lat"]}';
+			var zoom = '@{params["zoom"]}';
+			var dbOnline = true;
+%if @attr["osm_data_date"] == 'offline'
+			dbOnline = false;
+%end if
+			
+			$(function() {
+				//$("#loading").hide(0);
+				$('button').button();
+				
+				$.widget( "custom.catcomplete", $.ui.autocomplete, {
+					_renderMenu: function(ul, items) {
+						var self = this;
+						ul.append("<li class='ui-autocomplete-category'>Key/Value Pairs</li>");
+						$.each( items, function( index, item ) {
+							self._renderItem( ul, item );
+						});
+					},
+					
+					_renderItem: function(ul, item) {
+						return $( "<li></li>" )
+							.data( "item.autocomplete", item )
+							.append( "<a>" + item.label + "</a>" )
+							.appendTo( ul );
+					}
+				});
+
+				
+				$('#search_string').catcomplete({
+					position : {my: "right top", at: "right bottom", collision: "none" },
+					minLength : 2,
+					source :  function(request, response) {
+						var result = [];
+						
+						$.ajax({
+							url : basePath + '/tagfinder/api/search',
+							dataType : 'jsonp',
+							data : {
+								q : request.term
+							},
+							success : function(data) {
+								$.merge(result, $.map(data.data, function(item) {
+									for(var index in item) {
+										return {
+											label : index + " -> " + item[index],
+											key : index,
+											value : item[index],
+										}
+									}
+								}));
+								
+								response(result);
+							},
+							error : function(jqXHR, textStatus, errorThrown) {
+								//alert(textStatus);
+							} 
+						});
+					},
+					select: function(event, ui){
+					},
+					/*
+					open: function() {
+						$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+					},
+					close: function() {
+						$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+					}
+					*/
+				});
+				
+			});
+			
+%compiler-settings reset
+		</script>
+		<script type="text/javascript" src="${path}/js/attributfinder.js"></script>
+		
+		
+		
+		
+		
+		<!-- Piwik -->
+		<script type="text/javascript">
+			var pkBaseURL = (("https:" == document.location.protocol) ? "https://log.hsr.ch/" : "http://log.hsr.ch/");
+			document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		
+		<script type="text/javascript">
+			try {
+				var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 54);
+				piwikTracker.trackPageView();
+				piwikTracker.enableLinkTracking();
+			} catch( err ) {
+			}
+		</script>
+		
+		<noscript><p><img src="http://log.hsr.ch/piwik.php?idsite=54" style="border:0" alt="" /></p></noscript>
+		<!-- End Piwik Tracking Code -->
+		
+		
+		
+		<!--[if lt IE 9]>
+			<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		
+	</head>
+	<body>
+		<div id="container">
+			<div id="header" class="header">
+
+				<header>
+					<div id="logo">
+						<span style="font-size:32px;font-weight:bold;color:#084BBA;">
+							OpenPOIMap <img style="vertical-align:top;" src="${path}/img/swiss_flag.png"/> <span style="font-size:14px;vertical-align:top;font-weight:normal;">beta</span><span style="font-size:14px;vertical-align:bottom;font-weight:normal;">$getReleaseVersion()</span>
+						</span>
+						<span style="float:right;">
+							<a href="http://www.hsr.ch"><img src="${path}/img/logo_hsr.gif"/></a>
+						</span>
+					</div>
+					<nav id="main-navigation">
+						<ul id="menu">
+							#set c1 = ''
+							#set c2 = ''
+							#set c3 = ''
+							#set c4 = ''
+							#set c5 = ''
+							
+							#if len($modules) == 0
+							    #set c1 = 'current'
+							#elif $modules[0] == 'download'
+								#set c2 = 'current'
+							#elif $modules[0] == 'querybuilder'
+								#set c3 = 'current'
+							#elif $modules[0] == 'tagfinder'
+								#set c4 = 'current'
+							#elif $modules[0] == 'services'
+								#set c5 = 'current'
+							#else
+								#set c1 = 'current'
+							#end if
+							
+							<li class="$c1" style="vertical-align: middle;"><a href="javascript:Navigation.prototype.navigateTo('${path}/');" data-action="home">Home</a></li>
+							<li class="$c3" style="vertical-align: middle;"><a href="javascript:Navigation.prototype.navigateTo('${path}/querybuilder');" data-action="TagFinder">Query Builder</a></li>
+							<li class="$c4" style="vertical-align: middle;"><a href="javascript:Navigation.prototype.navigateTo('${path}/tagfinder');" data-action="TagFinder">TagFinder</a></li>
+							<li class="$c2" style="vertical-align: middle;"><a href="javascript:Navigation.prototype.navigateTo('${path}/download');" data-action="QueryBuilder">Download</a></li>
+							<li class="$c5" style="vertical-align: middle;"><a href="javascript:Navigation.prototype.navigateTo('${path}/services');" data-action="TagFinder">Webservices</a></li>
+	
+							<li style="float: right;">
+								<div><h1>
+									<form id="osm-attribute-finder" action="javascript:top.attributeFinder.request();">
+									#if $params.has_key('q')
+										<label style="font-weight: normal;">Search Tag:</Label>&nbsp;<input id="search_string" placeholder="Type a search string" type="text" value="${params['q']}" size="20"/>
+									#else
+										<label style="font-weight: normal;">Search Tag:</Label>&nbsp;<input id="search_string" placeholder="Type a search string" type="text" value="" size="20"/>
+									#end if
+									</form></h1>
+								</div>
+							<li>
+						</ul>
+						<div id="loading" style="display: none;"><img style="height:11px;vertical-align: top;" src="${path}/img/load_indicator.gif"/> Please wait while loading</div>
+					</nav>
+				</header>
+			#if $attr['osm_data_date'] == 'offline'
+				<div class="info">The database service is not ready. Please try again later (or send a message via Feedback).</div>
+			#end if
+			</div>
+			
+			<div id="content">${content}</div>
+
+			<div id="footer" class="footer">
+				<footer>
+					<ul>
+						<li class="left">Based on <a href="http://featureserver.org/">FeatureServer</a> and <a href="http://www.opengeospatial.org/standards/wfs">WFS</a></li>
+						<li class="left">&middot;</li>
+						<li class="left">Data ${attr['osm_data_date']} ODbL by <a href="http://www.openstreetmap.org/">OpenStreetMap</a></li>
+						<li class="right"><a href="http://twitter.com/sfkeller"><img src="${path}/img/full_logo_bw_scaled.png"/></a></li>
+						<li class="right">&middot;</li>
+						<li class="right"><a href="http://wiki.hsr.ch/StefanKeller/wiki.cgi?GeometaLab">Geometa Lab</a></li>
+						<li class="right">&middot;</li>
+						<li class="right"><a href="http://www.gis.hsr.ch/wiki/OpenPOIMap#Terms_of_Use">Terms of Use</a></li>
+						<li class="right">&middot;</li>
+						<li class="right"><a href="http://www.gis.hsr.ch/wiki/OpenPOIMap#Feedback">Feedback</a></li>
+						<li class="right">&middot;</li>
+						<li class="right"><a href="http://www.gis.hsr.ch/wiki/OpenPOIMap#About">About...</a></li>
+					</ul>
+				</footer>
+			</div>
+		</div>
+
+	</body>
+</html>

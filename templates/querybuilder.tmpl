@@ -1,0 +1,190 @@
+<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+
+<script src="${path}/js/Map.js"></script>
+<script src="${path}/js/querybuildermap.js"></script>
+<script src="${path}/js/filterencodingwizard.js"></script>
+
+<style type="text/css">.CodeMirror {border: 1px solid black; width:100%; height:auto; tabMode:indent;}</style>
+#compiler-settings
+cheetahVarStartToken = @
+#end compiler-settings
+
+<script>
+	var queryBuilder = new QueryBuilder();
+	
+	$(function() {
+		$('#parse').bind('click', function() {
+			queryBuilder.parse();
+		});
+		
+		$('#clear').bind('click', function() {
+			queryBuilder.clear();
+		});
+		
+		queryBuilder.setDyn('comparisonOperators', '@wizard.comparisonToJson()');
+		queryBuilder.setDyn('logicalOperators', '@wizard.logicalToJson()');
+
+		if(editor.getFormatedValue().length > 0) {
+			queryBuilder.parseToUI();
+		}
+	});
+</script>
+
+
+<script id="operatorGroupTmpl" type="text/x-jquery-tmpl">
+	<span>
+		<label>Select operator for joining the following operators:&nbsp;</label>@wizard.logicalToHTML()
+	</span>
+</script>
+
+
+<script id="subgroupTmpl" type="text/x-jquery-tmpl">
+	<p style="width: 100%; text-align: right; margin-right:20px;">
+		<button onClick="javascript:queryBuilder.removeSubgroup(this);">Remove subgroup</button>
+		<button onClick="javascript:queryBuilder.addSubgroup(this);">Add subgroup</button>
+	</p>
+</script>
+
+<script id="rowTmpl" type="text/x-jquery-tmpl">
+	<tr>
+		<td><input data-id="key" onKeyUp="javascript:queryBuilder.checkInput(this);"></input></td>
+		<td>@wizard.comparisonToHTML()</td>
+		<td><input data-id="value" onKeyUp="javascript:queryBuilder.checkInput(this);"></input></td>
+		<td><a onClick="javascript:queryBuilder.removeRow(this);">[-]</a></td>
+	</tr>
+</script>
+
+<script id="betweenTmpl" type="text/x-jquery-tmpl">
+	<table>
+		<tbody>
+			<tr>
+				<td>From</td>
+				<td><input></input></td>
+				<td>To</td>
+				<td><input></input></td>
+			</tr>
+		</tbody>
+	</table>
+</script>
+
+<script id="likeTmpl" type="text/x-jquery-tmpl">
+	<table>
+		<tbody>
+			<tr>
+				<td>Value</td>
+				<td><input></input></td>
+				<td>SingleChar</td>
+				<td><input></input></td>
+				<td>WildCard</td>
+				<td><input></input></td>
+			</tr>
+		</tbody>
+	</table>
+</script>
+
+<script id="cellTmpl" type="text/x-jquery-tmpl">
+	<input></input>
+</script>
+
+
+<script id="groupTmpl" type="text/x-jquery-tmpl">
+	<fieldset style="margin: 20px;">
+		<legend>Group</legend>
+		<table>
+			<thead>
+				<tr>
+					<th>Key / Attribute</th>
+					<th>Operator</th>
+					<th>Value</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<td colspan="4" style="border-top: 1px solid black;" align="right"><a onClick="${script}">Add</a></td>
+				</tr>
+			</tfoot>
+			<tbody>
+			</tbody>
+		</table>
+	</fieldset>
+</script>
+
+
+#compiler-settings reset
+
+
+<article>
+	<section class="left">
+		<div id="builder">
+			<hgroup>
+				<h1>Wizard</h1>
+			</hgroup>
+			<p>The <strong>wizard</strong> assists you in building a query expression conforming to the OGC Filter Encoding 2.0 Encoding Standard.
+			To start the wizard, use the <strong>Add Group</strong> button and <strong>Add</strong> key and value.
+			Click <strong>Parse</strong> and the query is displayed as XML in the Query Expression box.
+			</p>
+	<!--
+			<p>The wizard below assists you to build a query conforming to the OGC Filter Encoding Standard v2.0.0.</p>
+			<p>To start, use the Add Group button. After you have finished building the query, click <strong>parse</strong> and the query is displayed as XML in the text box below. To display results you can use the <strong>search</strong> button.</p>
+	-->
+			<p>
+				<fieldset id="filter_set">
+					<p style="text-align: right; margin-right:20px;"><button onClick="javascript:queryBuilder.addGroup(this);">Add Group</button></p>
+				</fieldset>
+	
+			</p>
+			<p style="width:100%;text-align:right;">
+				<button id="clear">Clear</button>
+				<button id="parse">Parse</button>
+			</p>
+			<!--
+			<hgroup>
+				<h1>Query Expression</h1>
+			</hgroup>
+			-->
+			<p>You can enter or modify the <strong>Query Expression</strong> directly (use Filter Encoding syntax).
+			When finished, click on <strong>Show</strong> to visualize the result of the query expression on a map.
+			</p>
+			
+			
+		<!--
+			<p>Add your query to the box below (supported standard: OGC Filter Encoding v2.0.0):</p>
+			-->
+			<div>
+			#if $params.has_key('filter')
+				<textarea style="width:100%;" rows="10" id="filter">${params['filter']}</textarea>
+			#else
+				<textarea style="width:100%;" rows="10" id="filter"></textarea>
+			#end if 
+			</div>
+			<p style="width:100%;text-align:right;">
+				<button id="bDownload">Download</button>
+				<button id="bShow">Show</button>
+			</p>
+			<p id="error_msg" style="display:none;"></p>
+		</div>
+	</section>
+	<aside id="sidebar" class="right" style="width:250px;">
+		<hgroup>
+			<h1>Examples:</h1>
+		</hgroup>
+		<p>
+			<a href="javascript:queryMap.queryExample('bus_stops_vbz')">All bus stations of VBZ (EqualTo)</a><br/>
+			<a href="javascript:queryMap.queryExample('banks_not_ubs')">All Banks except UBS (NotEqualTo)</a><br/>
+			<a href="javascript:queryMap.queryExample('between')">IDs Between 1 and 500000 (Between)</a><br/>
+			<a href="javascript:queryMap.queryExample('like')">All bus stations of BVB</a><br/>
+		</p>
+	<!--
+		<p>
+			<div id="osm_map" class="map" style="width:100%;height:500px;"></div>
+		</p>
+	-->
+	</aside>
+</article>
+
+<script>
+	var editor = CodeMirror.fromTextArea(document.getElementById("filter"), {mode: {name: "xml", htmlMode: true}});
+	editor = Class.Util.extend(editor, Editor.prototype);
+	Navigation.prototype.register('filter', editor, 'getFormatedValue');
+</script>

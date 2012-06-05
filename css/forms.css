@@ -1,0 +1,14 @@
+/* ~~~~~~~~~ generic ~~~~~~~~~~ */
+
+aside form textarea {
+	width: 203px;
+	height: 100px;
+	font: 12px tahoma, verdana, arial, helvetica, sans-serif;
+}
+aside form input {
+	font: 12px tahoma, verdana, arial, helvetica, sans-serif;
+}
+
+button {
+	font: 12px tahoma, verdana, arial, helvetica, sans-serif;
+}

@@ -1,0 +1,124 @@
+#encoding utf-8
+<style type="text/css">
+	fieldset.step span {
+		margin-left: 7px;
+		/* color: #4080BF; */
+	}
+</style>
+
+<article>
+	<section>
+		<div>
+		#if $error
+			<p><label>Message:</label><br/>${error['message']}</p>
+		#else
+		
+			<hgroup>
+				<h1>Result</h1>
+			</hgroup>
+	
+			#if len($resultlist) == 0
+				<p>Enter your query in the Search Tag box to the right.</p>
+			#else
+				<p>
+					<fieldset>
+						<legend>Search String Analysis</legend>
+						<table>
+							<tbody>
+								<tr>
+									<td><label>Search String:</label></td>
+									<td>${searchQuery}</td>
+								</tr>
+								<tr>
+									<td><label>Detected Language:</label></td>
+									<td>${searchLang}</td>
+								</tr>
+								<tr>
+									<td><label>Preferred Value:</label></td>
+									<td>${preferredValue}</td>
+								</tr>
+							</tbody>
+						</table>
+						<br/>
+					</fieldset>
+				</p>
+				<p>&nbsp;</p>
+				<p>
+					<table>
+						<thead>
+							<tr>
+								<th>Count</th>
+								<th>Key</th>
+								<th>Value</th>
+								<th>Filter</th>
+							</tr>
+						</thead>
+						<tbody>
+					#for $result in $resultlist
+							<tr>
+								<td>$result['count']</td>
+								<td>$result['key']</td>
+								<td>$result['value']</td>
+								<td><a href="javascript:filter.setLiteral('$result["value"]');javascript:filter.setPropertyName('$result["key"]');javascript:Navigation.prototype.navigateTo('${path}/querybuilder');">[+]</a></td>
+							</tr>
+					#end for
+						</tbody>
+					</table>	
+				</p>
+			#end if
+	
+		#end if
+		</div>
+	</section>
+</article>
+
+
+#compiler-settings
+cheetahVarStartToken = @
+directiveStartToken = %
+#end compiler-settings
+
+<script>
+	$(function() {
+	
+		$(window).resize(function() {
+			$('section>div').css({"overflow-y":"auto"});
+			$('section>div').height($(window).height()-$('#header').height()-$('#footer').height()-56);
+		});
+
+	
+		$('section>div').css({"overflow-y":"auto"});
+		$('section>div').height($(window).height()-$('#header').height()-$('#footer').height()-56);
+	
+
+
+
+		%if @params.has_key('filter')
+			var filterString = "@{params['filter']}";
+		%else
+			var filterString = '';
+		%end if
+		
+		filter = new Filter();
+
+		Navigation.prototype.registerCallback('filter', function() {
+			if(filterString.length > 0) {
+				return filterString;
+			} else {
+				return filter.getStandardFilter();
+			}
+		});
+		Navigation.prototype.registerCallback('zoom', function() {
+			return zoom;
+		});
+		Navigation.prototype.registerCallback('lat', function() {
+			return lat;
+		});
+		Navigation.prototype.registerCallback('lon', function() {
+			return lon;
+		});
+	});
+</script>
+
+%compiler-settings reset
+

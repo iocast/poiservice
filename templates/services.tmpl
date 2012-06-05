@@ -1,0 +1,211 @@
+<style type="text/css">
+.panel {
+	display: none;
+	width: 100%;
+	position: relative;
+}
+aside p:hover {
+	background-color: #DCDCDC;
+	cursor: pointer;
+}
+
+.CodeMirror {border: 1px solid black; width:100%; height:auto; indentUnit:2; tabMode:"indent"}
+
+</style>
+<script src="${path}/js/services.js"></script>
+
+#compiler-settings
+cheetahVarStartToken = @
+directiveStartToken = %
+#end compiler-settings
+
+<script id="workspaceSuccessTmpl" type="text/x-jquery-tmpl">
+	<div>
+		<p>Your workspace key is: <code>${key}</code></p>
+		<p>You can access your workspace by using the following URL in your preferred desktop application like Quantum GIS, etc.<br/>
+		URL: <code>${url}</code></p>
+	</div>
+</script>
+<script id="availabilityTmpl" type="text/x-jquery-tmpl">
+	<p style="width:100%;border-top: 1px dashed black;border-bottom: 1px dashed black;">Workspace: <strong>${Workspace}</strong><br/>
+	Last access: <strong>${LastAccess}</strong><br/>
+	URL: <code>${url}</code></p>
+</script>
+
+%compiler-settings reset
+
+
+<article>
+	<aside class="left">
+		<hgroup>
+			<h1>Services</h1>
+		</hgroup>
+		<p data-id="workspace"><a>Workspace</a><br/>
+		for your own use, depending on your query.</p>
+		<p data-id="service_efeatureserver"><a>eFeatureServer</a><br/>
+		is responsible to query, insert, update, and delete features. It implements OGC WFS &amp; WFS-T.</p>
+		<p data-id="service_featurefilter"><a>FeatureFilter</a><br/>
+		is responsible to cluster a bunch of features.</p>
+		<p data-id="service_tagfinder"><a>TagFinder</a><br/>
+		tries to find the best OSM key value pair to a given input string.</p>
+	</aside>
+	
+	<section class="right">
+		<div id="documentation">
+			<div id="workspace" class="panel" style="display:table-cell;">
+				<hgroup>
+					<h1>Workspace</h1>
+				</hgroup>
+				
+				<p>A workspace will be purged from the database after 90 days of inactivity.</p>
+
+				<hgroup>
+					<h2>Your last query</h2>
+				</hgroup>
+				<div>
+					#if $params.has_key('filter')
+						<textarea id="filter" name="filter">${params['filter']}</textarea>
+					#else
+						<textarea id="filter" name="filter"></textarea>
+					#end if
+					<br/>
+					<label>Custom alias (optional):</label>&nbsp;<input id="cid" type="text" value="" size="20"/><br/>
+				</div>
+				<p>
+					<div><button id="bWorkspace">Create Workspace</botton></div>
+				</p>
+				<p>
+					<div id="message"></div>
+				</p>
+				<p>&nbsp;</p>
+				
+				<hgroup>
+					<h2>Check a last workspace access</h2>
+				</hgroup>
+				<p>
+					<label>By key:</label>&nbsp;<input id="skey" type="text" value="" size="20"/><br/>
+					<label>By custom alias:</label>&nbsp;<input id="sid" type="text" value="" size="20"/><br/>
+				</p>
+				<p>
+					<div><button id="bCheck">Check</botton></div>
+				</p>
+				<p>
+					<div id="availability"></div>
+				</p>
+				
+			</div>
+		
+			<div id="service_efeatureserver" class="panel">
+				<hgroup>
+					<h1>eFeatureServer</h1>
+				</hgroup>
+				<p>eFeatureServer implements the Web Feature Service (WFS) and Web Feature Service Transaction (WFS-T) as well as the Filter Encoding Standard from Open Geospatial Consortium (OGC).</p>
+				<p>The Service can be called as follow:</p>
+				<p>
+					<table>
+						<tbody>
+							<tr>
+								<td>Path:</td>
+								<td><code>$getFeatureServerURL()</code></td>
+							</tr>
+							<tr>
+								<td>Parameters:</td>
+								<td><code>service</code> - Possible values: <code>OSM, GML, WFS, KML, JSON, GeoRSS, atom, HTML, GeoJSON, SHP, CSV, GPX, OV2</code>.<br/>
+									<code>request</code> - Possible values: <code>GetCapabilities</code>, <code>DescribeFeatureType</code>, <code>GetFeature</code>.<br/>
+									<code>typename</code> - Name of the section in the configuration file. Only possible if using <code>DescribeFeatureType</code> or <code>GetFeature</code> request.<br/>
+									<code>filter</code> - Filter Encoding according to OGC FE Standard. Only possible if using <code>GetFeature</code> request.<br/>
+									<code>bbox</code> - (optional) Bounding box.</td>
+							</tr>
+							<tr>
+								<td>Result:</td>
+								<td>Depending on the parameter <code>request</code> and <code>service</code></td>
+							</tr>
+							<tr>
+								<td>Example:</td>
+								<td><code>$getFeatureServerURL()?service=WFS&request=GetCapabilities</code><br/><br/>
+								<code>$getFeatureServerURL()?service=WFS&request=DescribeFeatureType&typename=points</code><br/><br/>
+								<code>$getFeatureServerURL()?service=WFS&request=GetFeature&typename=points&filter=&lt;Filter&gt;&lt;And&gt;&lt;PropertyIsEqualTo&gt;&lt;PropertyName&gt;highway&lt;/PropertyName&gt;&lt;Literal&gt;bus_stop&lt;/Literal&gt;&lt;/PropertyIsEqualTo&gt;&lt;PropertyIsEqualTo&gt;&lt;PropertyName&gt;operator&lt;/PropertyName&gt;&lt;Literal&gt;VBZ&lt;/Literal&gt;&lt;/PropertyIsEqualTo&gt;&lt;/And&gt;&lt;/Filter&gt;</code></td>
+							</tr>	
+						</tbody>
+					</table>
+				</p>
+			</div>
+			
+			<div id="service_featurefilter" class="panel">
+				<hgroup>
+					<h1>FeatureFilter</h1>
+				</hgroup>
+				<p>FeatureFitler implements the clustering algorithm, means it gets a list of features and clusters it according to its overlap on graphical represenatation.</p>
+				<p>The service can be called as follow:</p>
+				<p>
+					<table>
+						<tbody>
+							<tr>
+								<td>Path:</td>
+								<td>$getFeatureFilterURL()</td>
+							</tr>
+							<tr>
+								<td>Result:</td>
+								<td>Depending on the parameter <code>request</code> and <code>service</code></td>
+							</tr>
+							<tr>
+								<td>Parameters:</td>
+								<td><code>server</code> - defines the feature server which should be called. Need to be configured in the configuration file of the FeatureFilter Server configuration file as section.<br/>
+									<code>bbox</code> - bounding box of the current map area.<br/>
+									<code>size</code> - size of the map div in pixel as (width,height).<br/>
+									<code>service</code> - Possible values: <code>OSM, GML, WFS, KML, JSON, GeoRSS, atom, HTML, GeoJSON, SHP, CSV, GPX, OV2</code>.<br/>
+									<code>request</code> - Possible values: <code>GetCapabilities</code>, <code>DescribeFeatureType</code>, <code>GetFeature</code>.<br/>
+									<code>typename</code> - Name of the section in the configuration file. Only possible if using <code>DescribeFeatureType</code> or <code>GetFeature</code> request.<br/>
+									<code>filter</code> - Filter Encoding according to OGC FE Standard. Only possible if using <code>GetFeature</code> request.</td>
+							</tr>
+							<tr>
+								<td>Example:</td>
+								<td><code>$getFeatureFilterURL()?bbox=4.565463,45.778748,11.882358,47.846085&size1332,550&service=WFS&request=GetFeature&typename=points&filter=&lt;Filter&gt;&lt;And&gt;&lt;PropertyIsEqualTo&gt;&lt;PropertyName&gt;highway&lt;/PropertyName&gt;&lt;Literal&gt;bus_stop&lt;/Literal&gt;&lt;/PropertyIsEqualTo&gt;&lt;PropertyIsEqualTo&gt;&lt;PropertyName&gt;operator&lt;/PropertyName&gt;&lt;Literal&gt;VBZ&lt;/Literal&gt;&lt;/PropertyIsEqualTo&gt;&lt;/And&gt;&lt;/Filter&gt;</code></td>
+							</tr>	
+						</tbody>
+					</table>
+				</p>
+			</div>
+			
+			<div id="service_tagfinder" class="panel">
+				<hgroup>
+					<h1>TagFinder</h1>
+				</hgroup>
+				<p>Searches the best key value pair for the OpenStreetMap data according to a input string.</p>
+				<p>The service can be called as follow:</p>
+				<p>
+					<table>
+						<tbody>
+							<tr>
+								<td>Path:</td>
+								<td><code>${path}//tagfinder/search</code></td>
+							</tr>
+							<tr>
+								<td>Parameters:</td>
+								<td><code>q</code> - query string.</td>
+							</tr>
+							<tr>
+								<td>Result:</td>
+								<td>
+		<pre>{
+		   "total" : INT,
+		   "data" : {
+		      "key" : STRING,
+		      "value" : STRING
+		   }
+		}</pre></td>
+							</tr>
+							<tr>
+								<td>Example:</td>
+								<td><code>${path}/tagfinder/search?q=Schloss</code></td>
+							</tr>
+						</tbody>
+					</table>
+				</p>
+			</div>
+			
+		</div>
+	</section>
+
+
+</article>

@@ -1,0 +1,315 @@
+/* ~~~~~~~~~ layout ~~~~~~~~~~ */
+#container {
+	width: 98.5%;
+	margin: 10px auto;
+	background: #FFF2FF;
+	background: #fff;
+	/*
+	padding: 10px;
+	overflow: hidden;
+	*/
+	position:relative;
+	height:100%;
+	min-height:100%;
+}
+
+#content {
+	width: 100%;
+	height: 100%;
+}
+
+.map {
+	border: 1px solid rgb(0,0,0);
+	-moz-box-shadow: 5px 5px 7px #888;
+	-moz-border-radius-topright: 0px;
+	-moz-border-radius-topleft: 0px;
+	-moz-border-radius-bottomright: 0px;
+	-moz-border-radius-bottomleft: 0px;
+	
+	-webkit-box-shadow: 5px 5px 7px #888;
+	-webkit-border-top-left-radius: 0px;
+	-webkit-border-top-right-radius: 0px;
+	-webkit-border-bottom-left-radius: 0px;
+	-webkit-border-bottom-right-radius: 0px;
+}
+
+/* ~~~~~~~~~ header ~~~~~~~~~~ */
+
+.header {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	border: 0;
+} 
+*/
+header {
+	margin-bottom: 40px;
+}
+
+#main-navigation {
+	padding-top: 15px;
+	border-bottom: 2px solid #666666;
+	margin: 20px 0;
+}
+	#main-navigation ul {
+		overflow: hidden;
+		width: 100%;
+		list-style: none;
+		font-size: 16px;
+	}
+		#main-navigation li {
+			float: left;
+			font: inherit;
+		}
+			#main-navigation li img {
+				height: 28px;
+			}
+			
+			#main-navigation li a {
+				background: #4080BF;
+				margin: 0 5px 0 0;
+				padding: 5px 12px;
+				display: block;
+				font: inherit;
+				color: #000000;
+			}
+			#main-navigation li.current a {
+				background: #4080BF;
+				color: #FFFFFF;
+			}
+			#main-navigation li a:hover {
+				background: #4080BF;
+				color: #FFFFFF;
+			}
+			
+		#main-navigation div {
+			vertical-align: bottom;
+			float: right;
+		}
+			#main-navigation div img {
+				padding-top: 10px;
+			}
+
+#loading {
+	font-size: 15px;
+	font-style: italic;
+}
+
+/* ~~~~~~~~~ footer ~~~~~~~~~~ */
+.footer {
+	position:absolute;
+	bottom: 0px;
+	width: 100%;
+	border: 0;
+	margin: 0;
+	background-color: #FFFFFF;
+}
+
+footer {
+	width: 98.5%;
+	padding: 10px;
+	font-size: 12px;
+	white-space: nowrap;
+	text-align: right;
+	border-top: 1px solid black;
+}
+
+footer ul {
+	width: 100%;
+	display: table;
+	list-style: none;
+	font: inherit;
+	margin-bottom: 12px;
+	white-space: nowrap;
+}
+
+	footer ul li {
+		display: table-cell;
+		padding-left: 5px;
+		font: inherit;
+		white-space: nowrap;
+	}
+
+	footer ul li.left {
+		float: left;
+		text-align: left;
+		white-space: nowrap;
+	}
+	
+	footer ul li.right {
+		float: right;
+		text-align: right;
+	}
+
+		footer ul li a {
+			font: inherit;
+			text-decoration: none;
+		}
+
+/* ~~~~~~~~~ article ~~~~~~~~~~ */
+article {
+	width: 100%;
+	display: table;
+	float: left;
+	margin-bottom: 20px;
+	height: 100%;
+}
+
+	#side-content hgroup h1 {
+		font-size: 16px;
+		margin-bottom: 10px;
+	}
+	#side-content hgroup {
+		font-size: 14px;
+		margin-top: 20px;
+	}
+	#side-content p {
+		color: #AAA;
+	}
+	
+#content-navigation {
+	margin-top: 30px;
+}
+
+#content-navigation ul {
+	display: table;
+	width: 100%;
+	list-style: none;
+	font-size: 16px;
+	margin-bottom: 10px;
+}
+
+	#content-navigation ul li {
+		display: table-cell;
+	}
+
+	#content-navigation ul li.left {
+		float: none;
+		text-align: left;
+		width: 100%;
+	}
+	
+	#content-navigation ul li.right {
+		text-align: right;
+	}
+
+		#content-navigation ul li a {
+			font: inherit;
+			text-decoration: none;
+		}
+		
+		#content-navigation ul li.current a {
+			text-decoration: underline;
+		}
+
+
+
+/* ~~~~~~~~ section ~~~~~~~~~ */
+section {
+	width: 100%;
+	display:table-cell;
+	vertical-align: top;
+	height: 100% !important;
+	/*min-height: 100%;*/
+}
+
+section.right {
+	padding-right: 0px;
+	padding-left: 10px;
+}
+
+section.left {
+	padding-left: 0px;
+	padding-right: 20px;
+}
+
+
+/* ~~~~~~~~~ aside ~~~~~~~~~~ */
+aside {
+	float: right;
+	width: 360px;
+	display:table-cell;
+	vertical-align: top;
+	background: white;
+	height:100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+aside.left {
+	padding-left: 0px;
+	padding-right:10px;
+	height: 200px;	
+}
+
+aside.right {
+	padding-left: 10px;
+	padding-right: 0px;
+}
+
+.ui-resizable-e {
+	background: #DCDEF7;
+	width: 3px;
+}
+.ui-resizable-w {
+	background: #DCDEF7;
+	width: 3px;
+}
+.sidebarIcon {
+	width: 26px;
+	height: 26px;
+	background: #FFFFFF;
+	z-index: 2000;
+}
+
+/* ~~~~~~~~~ addititions ~~~~~~~~~~ */
+
+#black_background {
+	position: absolute;
+	display: none;
+	z-index: 2000;
+	background-color:#000000;
+	opacity: 0.8;
+}
+
+#loading_message {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	font-size: 18px;
+	color: white;
+	cursor: default;
+	width: 400px;
+	margin-left: -200px;
+	margin-top: -50px;
+	text-align: center;
+}
+
+/* ~~~~~~~~~ messages ~~~~~~~~~~ */
+.info, .success, .warning, .error, .validation {
+	border: 1px solid;
+	margin: 10px 0px;
+	padding:15px 10px 15px 50px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+}
+.info {
+	color: #00529B;
+	background-color: #BDE5F8;
+	background-image: url('../img/messages/info.png');
+}
+.success {
+	color: #4F8A10;
+	background-color: #DFF2BF;
+	background-image:url('../img/messages/success.png');
+}
+.warning {
+	color: #9F6000;
+	background-color: #FEEFB3;
+	background-image: url('../img/messages/warning.png');
+}
+.error {
+	color: #D8000C;
+	background-color: #FFBABA;
+	background-image: url('../img/messages/error.png');
+}

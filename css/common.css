@@ -1,0 +1,100 @@
+/* ~~~~~~~~~ common ~~~~~~~~~~ */
+html, body {
+	height: 100%;
+	overflow-y: hidden;
+	overflow-x: hidden;
+}
+
+body, select, input, textarea, a {
+	font-family: Verdana,Arial,sans-serif;
+	font-size: 13px;
+	/*font: 12px tahoma, verdana, arial, helvetica, sans-serif;*/
+	color: #333;
+	text-decoration: none;
+}
+body {
+	background: #fff repeat;
+}
+
+h1 {
+	font-weight: normal;
+	color: #666666;
+	font: 16px tahoma, verdana, arial, helvetica, sans-serif;
+	margin: 0 0 0.2em 0;
+}
+
+h2 {
+	font-weight: normal;
+	color: #0A5C86;
+	font: 14px tahoma, verdana, arial, helvetica, sans-serif;
+	margin: 0 0 1em 0;	
+}
+
+h3 {
+}
+
+h4 {
+}
+
+section p, section ul, section ol,
+aside p, aside ul, aside ol {
+	margin: 10px 0;
+}
+section ul {
+	margin-left: 10px;
+}
+section ol {
+	margin-left: 1.4em;
+}
+label {
+	font-weight: bold;
+}
+
+a {
+	color: #0A5C86;
+}
+a:hover {
+	color: #000000;
+}
+
+
+/* ~~~~ table ~~~ */
+
+th {
+	vertical-align: top;
+	text-align: left;
+	border-bottom: 1px solid black;
+}
+
+th:nth-child(n+2) {
+	padding-left: 15px;
+}
+
+tbody td {
+	vertical-align: top;
+	text-align: left;
+}
+
+td:nth-child(n+2) {
+	padding-left: 15px;
+}
+
+tr:nth-child(n+2) td {
+	padding-top: 5px;
+}
+
+
+/* ~~~~ fieldset ~~~ */
+
+fieldset {
+	border: 1px solid black;
+}
+fieldset > * {
+	margin: 20px 20px 0px 20px;
+}
+
+legend {
+	padding: 0px 5px 0px 5px;
+	margin: 0px 10px 0px 10px;
+	text-align: left;
+}

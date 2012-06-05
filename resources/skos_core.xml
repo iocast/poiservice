@@ -1,0 +1,720 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY skos "http://www.w3.org/2004/02/skos/core#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<rdf:RDF xmlns="http://www.w3.org/2004/02/skos/core#"
+     xml:base="http://www.w3.org/2004/02/skos/core"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+    <owl:Ontology rdf:about=""/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#broadMatch -->
+
+    <owl:ObjectProperty rdf:about="#broadMatch">
+        <rdfs:label xml:lang="en">broader match</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:subPropertyOf rdf:resource="#broader"/>
+        <rdfs:subPropertyOf rdf:resource="#mappingRelation"/>
+        <owl:inverseOf rdf:resource="#narrowMatch"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#broader -->
+
+    <owl:ObjectProperty rdf:about="#broader">
+        <rdfs:label xml:lang="en">has broader</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:comment xml:lang="en"
+            >Broader concepts are typically rendered as parents in a concept
+      hierarchy (tree).</rdfs:comment>
+        <rdfs:comment xml:lang="en"
+            >By convention, skos:broader is only used to assert an immediate
+      (i.e. direct) hierarchical link between two conceptual resources.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="#broaderTransitive"/>
+        <owl:inverseOf rdf:resource="#narrower"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#broaderTransitive -->
+
+    <owl:ObjectProperty rdf:about="#broaderTransitive">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:label xml:lang="en"
+            >broader transitive</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:comment xml:lang="en"
+            >By convention, skos:broaderTransitive is not used to make
+      assertions. Rather, the properties can be used to draw inferences about the transitive closure
+      of the hierarchical relation, which is useful e.g. when implementing a simple query expansion
+      algorithm in a search application.</rdfs:comment>
+        <owl:inverseOf rdf:resource="#narrowerTransitive"/>
+        <rdfs:subPropertyOf rdf:resource="#semanticRelation"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#closeMatch -->
+
+    <owl:ObjectProperty rdf:about="#closeMatch">
+        <rdf:type rdf:resource="&owl;SymmetricProperty"/>
+        <rdfs:label xml:lang="en">close match</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:subPropertyOf rdf:resource="#mappingRelation"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#exactMatch -->
+
+    <owl:ObjectProperty rdf:about="#exactMatch">
+        <rdf:type rdf:resource="&owl;SymmetricProperty"/>
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:label xml:lang="en">exact match</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:comment xml:lang="en"
+            >skos:exactMatch is disjoint with each of the properties
+      skos:broadMatch and skos:relatedMatch.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="#closeMatch"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#hasTopConcept -->
+
+    <owl:ObjectProperty rdf:about="#hasTopConcept">
+        <rdfs:label xml:lang="en">has top concept</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:range rdf:resource="#Concept"/>
+        <rdfs:domain rdf:resource="#ConceptScheme"/>
+        <owl:inverseOf rdf:resource="#topConceptOf"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#inScheme -->
+
+    <owl:ObjectProperty rdf:about="#inScheme">
+        <rdfs:label xml:lang="en">in scheme</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:comment xml:lang="en"
+            >A concept may be a member of more than one concept scheme.</rdfs:comment>
+        <rdfs:range rdf:resource="#ConceptScheme"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#mappingRelation -->
+
+    <owl:ObjectProperty rdf:about="#mappingRelation">
+        <rdfs:label xml:lang="en"
+            >mapping relation</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:comment xml:lang="en"
+            >These concept mapping relations mirror semantic relations, and the
+      data model defined below is similar (with the exception of skos:exactMatch) to the data model
+      defined for semantic relations. A distinct vocabulary is provided for concept mapping
+      relations, to provide a convenient way to differentiate links within a concept scheme from
+      links between concept schemes. However, this pattern of usage is not a formal requirement of
+      the SKOS data model, and relies on informal definitions of best practice.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="#semanticRelation"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#member -->
+
+    <owl:ObjectProperty rdf:about="#member">
+        <rdfs:label xml:lang="en">member</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:domain rdf:resource="#Collection"/>
+        <rdfs:range>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Collection"/>
+                    <rdf:Description rdf:about="#Concept"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#memberList -->
+
+    <owl:ObjectProperty rdf:about="#memberList">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:label xml:lang="en">member list</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:comment xml:lang="en"
+            >For any resource, every item in the list given as the value of the
+      skos:memberList property is also a value of the skos:member property.</rdfs:comment>
+        <rdfs:domain rdf:resource="#OrderedCollection"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#narrowMatch -->
+
+    <owl:ObjectProperty rdf:about="#narrowMatch">
+        <rdfs:label xml:lang="en">narrower match</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:subPropertyOf rdf:resource="#mappingRelation"/>
+        <rdfs:subPropertyOf rdf:resource="#narrower"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#narrower -->
+
+    <owl:ObjectProperty rdf:about="#narrower">
+        <rdfs:label xml:lang="en">has narrower</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:comment xml:lang="en"
+            >By convention, skos:broader is only used to assert an immediate
+      (i.e. direct) hierarchical link between two conceptual resources.</rdfs:comment>
+        <rdfs:comment xml:lang="en"
+            >Narrower concepts are typically rendered as children in a concept
+      hierarchy (tree).</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="#narrowerTransitive"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#narrowerTransitive -->
+
+    <owl:ObjectProperty rdf:about="#narrowerTransitive">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:label xml:lang="en"
+            >narrower transitive</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:comment xml:lang="en"
+            >By convention, skos:narrowerTransitive is not used to make
+      assertions. Rather, the properties can be used to draw inferences about the transitive closure
+      of the hierarchical relation, which is useful e.g. when implementing a simple query expansion
+      algorithm in a search application.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="#semanticRelation"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#related -->
+
+    <owl:ObjectProperty rdf:about="#related">
+        <rdf:type rdf:resource="&owl;SymmetricProperty"/>
+        <rdfs:label xml:lang="en">related to</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:comment xml:lang="en"
+            >skos:related is disjoint with skos:broaderTransitive</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="#semanticRelation"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#relatedMatch -->
+
+    <owl:ObjectProperty rdf:about="#relatedMatch">
+        <rdf:type rdf:resource="&owl;SymmetricProperty"/>
+        <rdfs:label xml:lang="en">related match</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:subPropertyOf rdf:resource="#mappingRelation"/>
+        <rdfs:subPropertyOf rdf:resource="#related"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#semanticRelation -->
+
+    <owl:ObjectProperty rdf:about="#semanticRelation">
+        <rdfs:label xml:lang="en"
+            >semantic relation</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:comment xml:lang="en"
+            >This property should not be used directly, but as a super-property
+      for all properties denoting a relationship of meaning between concepts.</rdfs:comment>
+        <rdfs:range rdf:resource="#Concept"/>
+        <rdfs:domain rdf:resource="#Concept"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#topConceptOf -->
+
+    <owl:ObjectProperty rdf:about="#topConceptOf">
+        <rdfs:label xml:lang="en"
+            >top concept in scheme</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:subPropertyOf rdf:resource="#inScheme"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#definition -->
+
+    <owl:DatatypeProperty rdf:about="#definition">
+        <rdfs:label xml:lang="en">definition</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#notation -->
+
+    <owl:DatatypeProperty rdf:about="#notation">
+        <rdfs:label xml:lang="en">notation</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:comment xml:lang="en"
+            >By convention, skos:notation is used with a typed literal in the
+      object position of the triple.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#Collection -->
+
+    <owl:Class rdf:about="#Collection">
+        <rdfs:label xml:lang="en">Collection</rdfs:label>
+        <owl:disjointWith rdf:resource="#Concept"/>
+        <owl:disjointWith rdf:resource="#ConceptScheme"/>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:comment xml:lang="en"
+            >Labelled collections can be used with collectable semantic relation
+      properties e.g. skos:narrower, where you would like a set of concepts to be displayed under a
+      &#39;node label&#39; in the hierarchy.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#Concept -->
+
+    <owl:Class rdf:about="#Concept">
+        <rdfs:label xml:lang="en">Concept</rdfs:label>
+        <owl:disjointWith rdf:resource="#ConceptScheme"/>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#ConceptScheme -->
+
+    <owl:Class rdf:about="#ConceptScheme">
+        <rdfs:label xml:lang="en">Concept Scheme</rdfs:label>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:comment xml:lang="en"
+            >A concept scheme may be defined to include concepts from different
+      sources.</rdfs:comment>
+        <rdfs:comment xml:lang="en"
+            >Thesauri, classification schemes, subject heading lists, taxonomies,
+      &#39;folksonomies&#39;, and other types of controlled vocabulary are all examples of concept schemes.
+      Concept schemes are also embedded in glossaries and terminologies.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#OrderedCollection -->
+
+    <owl:Class rdf:about="#OrderedCollection">
+        <rdfs:label xml:lang="en"
+            >Ordered Collection</rdfs:label>
+        <rdfs:subClassOf rdf:resource="#Collection"/>
+        <rdfs:isDefinedBy rdf:datatype="&xsd;anyURI"
+            >http://www.w3.org/2004/02/skos/core</rdfs:isDefinedBy>
+        <rdfs:comment xml:lang="en"
+            >Ordered collections can be used where you would like a set of concepts to be displayed in a specific order, and optionally under a &#39;node label&#39;.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#Collection -->
+
+    <owl:Thing rdf:about="#Collection">
+        <definition xml:lang="en"
+            >A meaningful collection of concepts.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#Concept -->
+
+    <owl:Thing rdf:about="#Concept">
+        <definition xml:lang="en"
+            >An abstract idea or notion; a unit of thought.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#ConceptScheme -->
+
+    <owl:Thing rdf:about="#ConceptScheme">
+        <definition xml:lang="en"
+            >A set of concepts, optionally including statements about semantic
+      relationships between those concepts.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#OrderedCollection -->
+
+    <owl:Thing rdf:about="#OrderedCollection">
+        <definition xml:lang="en"
+            >An ordered collection of concepts, where both the grouping and
+      the ordering are meaningful.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#altLabel -->
+
+    <owl:Thing rdf:about="#altLabel">
+        <definition xml:lang="en"
+            >An alternative lexical label for a resource.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#broadMatch -->
+
+    <owl:Thing rdf:about="#broadMatch">
+        <definition xml:lang="en"
+            >skos:broadMatch is used to state a hierarchical mapping link
+      between two conceptual resources in different concept schemes.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#broader -->
+
+    <owl:Thing rdf:about="#broader">
+        <definition xml:lang="en"
+            >A concept that is more general in meaning.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#broaderTransitive -->
+
+    <owl:Thing rdf:about="#broaderTransitive">
+        <definition
+            >skos:broaderTransitive is a transitive superproperty of skos:broader.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#changeNote -->
+
+    <owl:Thing rdf:about="#changeNote">
+        <definition xml:lang="en"
+            >A note about a modification to a concept.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#closeMatch -->
+
+    <owl:Thing rdf:about="#closeMatch">
+        <definition xml:lang="en"
+            >skos:closeMatch is used to link two concepts that are
+      sufficiently similar that they can be used interchangeably in some information retrieval
+      applications. In order to avoid the possibility of &quot;compound errors&quot; when combining mappings
+      across more than two concept schemes, skos:closeMatch is not declared to be a transitive
+      property.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#definition -->
+
+    <owl:Thing rdf:about="#definition">
+        <rdf:type rdf:resource="&owl;DatatypeProperty"/>
+        <definition xml:lang="en"
+            >A statement or formal explanation of the meaning of a concept.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#editorialNote -->
+
+    <owl:Thing rdf:about="#editorialNote">
+        <definition xml:lang="en"
+            >A note for an editor, translator or maintainer of the vocabulary.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#exactMatch -->
+
+    <owl:Thing rdf:about="#exactMatch">
+        <definition xml:lang="en"
+            >skos:exactMatch is used to link two concepts, indicating a high
+      degree of confidence that the concepts can be used interchangeably across a wide range of
+      information retrieval applications. skos:exactMatch is a transitive property, and is a
+      sub-property of skos:closeMatch.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#example -->
+
+    <owl:Thing rdf:about="#example">
+        <definition xml:lang="en"
+            >An example of the use of a concept.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#hasTopConcept -->
+
+    <owl:Thing rdf:about="#hasTopConcept">
+        <definition xml:lang="en"
+            >A top level concept in the concept scheme.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#hiddenLabel -->
+
+    <owl:Thing rdf:about="#hiddenLabel">
+        <definition xml:lang="en"
+            >A lexical label for a resource that should be hidden when
+      generating visual displays of the resource, but should still be accessible to free text search
+      operations.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#historyNote -->
+
+    <owl:Thing rdf:about="#historyNote">
+        <definition xml:lang="en"
+            >A note about the past state/use/meaning of a concept.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#inScheme -->
+
+    <owl:Thing rdf:about="#inScheme">
+        <definition xml:lang="en"
+            >A concept scheme in which the concept is included.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#mappingRelation -->
+
+    <owl:Thing rdf:about="#mappingRelation">
+        <definition xml:lang="en">Definition</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#member -->
+
+    <owl:Thing rdf:about="#member">
+        <definition xml:lang="en"
+            >A member of a collection.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#memberList -->
+
+    <owl:Thing rdf:about="#memberList">
+        <definition xml:lang="en"
+            >An RDF list containing the members of an ordered collection.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#narrowMatch -->
+
+    <owl:Thing rdf:about="#narrowMatch">
+        <definition xml:lang="en"
+            >skos:narrowMatch is used to state a hierarchical mapping link
+      between two conceptual resources in different concept schemes.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#narrower -->
+
+    <owl:Thing rdf:about="#narrower">
+        <definition xml:lang="en"
+            >A concept that is more specific in meaning.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#narrowerTransitive -->
+
+    <owl:Thing rdf:about="#narrowerTransitive">
+        <definition
+            >skos:narrowerTransitive is a transitive superproperty of skos:broader. By
+      convention, skos:narrowerTransitive is not intended to be used in assertions, but provides a
+      mechanism whereby the transitive closure of skos:narrower can be queried.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#notation -->
+
+    <owl:Thing rdf:about="#notation">
+        <definition xml:lang="en"
+            >A notation, also known as classification code, is a string of
+      characters such as &quot;T58.5&quot; or &quot;303.4833&quot; used to uniquely identify a concept within the scope
+      of a given concept scheme.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#note -->
+
+    <owl:Thing rdf:about="#note">
+        <definition xml:lang="en"
+            >A general note, for any purpose.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#prefLabel -->
+
+    <owl:Thing rdf:about="#prefLabel">
+        <definition xml:lang="en"
+            >The preferred lexical label for a resource, in a given language.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#related -->
+
+    <owl:Thing rdf:about="#related">
+        <definition xml:lang="en"
+            >A concept with which there is an associative semantic
+      relationship.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#relatedMatch -->
+
+    <owl:Thing rdf:about="#relatedMatch">
+        <definition xml:lang="en"
+            >skos:relatedMatch is used to state an associative mapping link
+      between two conceptual resources in different concept schemes.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#scopeNote -->
+
+    <owl:Thing rdf:about="#scopeNote">
+        <definition xml:lang="en"
+            >A note that helps to clarify the meaning of a concept.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#semanticRelation -->
+
+    <owl:Thing rdf:about="#semanticRelation">
+        <definition xml:lang="en"
+            >A concept related by meaning.</definition>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#topConceptOf -->
+
+    <owl:Thing rdf:about="#topConceptOf">
+        <definition xml:lang="en"
+            >Relates a concept to the concept scheme that it is a top level
+      concept of.</definition>
+    </owl:Thing>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 2.2.1.1138) http://owlapi.sourceforge.net -->
+

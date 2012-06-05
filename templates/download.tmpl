@@ -1,0 +1,94 @@
+<script src="${path}/lib/js/OpenLayers-2.11/OpenLayers.js"></script>
+<script src="${path}/js/Map.js"></script>
+<script src="${path}/js/download.js"></script>
+<style type="text/css">
+</style>
+
+<script>
+#compiler-settings
+cheetahVarStartToken = @
+directiveStartToken = %
+#end compiler-settings
+	$(function() {
+		%if @params.has_key('func')
+			%set c1 = 'preview'
+			%if @params['func'] == c1
+				$('#preview').click();
+			%end if
+		%end if
+	});
+
+%compiler-settings reset
+</script>
+
+
+<style type="text/css">.CodeMirror {border: 1px solid black; width:100%; height:100px; indentUnit:2; tabMode:"indent"}</style>
+<article>
+	<aside id="sidebar" class="left">
+		<form id="dl_form" action="${path}/download" method="get">
+			<hgroup>
+				<h1>Step 1: Locaction</h1>
+			</hgroup>
+			<p style="width: 100%; position: relative; text-align: right; overflow: hidden;" class="ui-widget ui-widget-content ui-corner-all ui-autocomplete-input">
+				<input id="sLocation" placeholder="Type a location" type="text" value="" style="width: 100%; position: absolute; top: 0; left: 0; right: 16px; background-color: transparent; border-width: 0; outline: none;" class="ui-widget ui-autocomplete-input"/>
+				<a id="bGeoLocate" href="javascript:void(0);"><img src="${path}/img/geolocation_icon.png" /></a>
+			</p>
+			<br/>
+			
+			<hgroup>
+				<h1>Step 2: Query</h1>
+			</hgroup>
+			<p>Insert a query here (OGC Filter Encoding v2.0.0) (Need help? Try the <a href="${path}/querybuilder">Query Builder</a>):</p>
+			<div>
+				#if $params.has_key('filter')
+					<textarea id="filter" name="filter" style="width:100%;">${params['filter']}</textarea>
+				#else
+					<textarea id="filter" name="filter" style="width:100%;"></textarea>
+				#end if
+			</div>
+			<p><input type="checkbox" id="bbox" name="bbox" value="" checked> Only download data within the current map extent.</input></p>
+			<p style="width: 100%; text-align: right;">
+				<button type="button" id="clear">Clear</button>&nbsp;<button type="button" id="preview">Show</button>
+			</p>
+			<p id="error_msg" style="display:none;"></p>
+			<hgroup>
+				<h1>Step 3: Format</h1>
+			</hgroup>
+			<p>Select a geodata format:</p>
+			<p>
+				<input type="radio" name="format" value="SHP" checked> Shapefile (.shp/.dbf zipped)</input><br/>
+				<input type="radio" name="format" value="KML"> KML</input><br/>
+				<input type="radio" name="format" value="GML"> GML 2.0</input><br/>
+				<input type="radio" name="format" value="OSM"> OSM</input><br/>
+				<input type="radio" name="format" value="GeoJSON"> GeoJSON 1.0</input><br/>
+				<input type="radio" name="format" value="GeoRSS"> GeoRSS-Simple / Atom</input><br/>
+				<input type="radio" name="format" value="HTML"> HTML</input><br/>
+				<input type="radio" name="format" value="CSV"> CSV</input><br/>
+				<input type="radio" name="format" value="GPX"> GPX (for Garmin)</input><br/>
+				<input type="radio" name="format" value="OV2"> OV2 (for TomTom)</input><br/>
+			</p>
+			<hgroup>
+				<h1>Step 4: Download</h1>
+			</hgroup>
+			<p>Please be patient while downloading. Depending on your query this may take some time.</p>
+			<p style="width: 100%; text-align: right;">
+				<button id="bDownload" name="action" value="download" type="submit">Download</button>
+			</p>
+		</form>
+	</aside>
+	<section class="right">
+		<hgroup>
+			<h1>Map</h1>
+		</hgroup>
+		<div style="position:relative; height: 100%; width:100%;">
+			<div id="osm_map" class="map" style="height:100%;width:100%"></div>
+		</div>
+		<div id="black_background">
+			<div id="loading_message">Please wait while loading ...</div>
+		</div>
+		<div id="sidebar_close" class="sidebarIcon" style="position:absolute;">
+			<img src="${path}/img/arrow_left.png" style="position:absolute;top:2px;left:7px;">
+		</div>
+	</section>
+</article>
+
