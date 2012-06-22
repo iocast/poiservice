@@ -11,3 +11,4 @@ cgitb.enable()
 service = Server.load('poiserver.cfg')
 cgi(service.dispatchRequest)
 
+
