@@ -218,7 +218,7 @@ var FeatureFilter = FeatureFilter.extend({
 				html += "<a onclick=\"javascript:filterEncoding.permalink('" + feature.layer.id + "', '" + feature.fid + "');\">Permalink</a>&nbsp;|&nbsp;";
 				
 				html += "<a href=\"http://www.openstreetmap.org/browse/";
-				if(feature.attributes['gtype'] == "po") {
+				if(feature.attributes['geometry_type'] == "po") {
 					html += "way/";
 				} else {
 					html += "node/";
