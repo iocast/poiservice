@@ -66,10 +66,7 @@ var FeatureFilter = FeatureFilter.extend({
 							var pos = $('#osm_map').offset();
 							$("#black_background").css({ "left": pos.left-15 + "px", "top":pos.top-10 + "px", "width":$('#osm_map').width() + 5 + "px", "height":$('#osm_map').height() + 5 + "px" }).show();
 							
-							for(index in filterEncoding.map.popups) {
-								filterEncoding.map.removePopup(filterEncoding.map.popups[index]);
-							}
-
+							filterEncoding.closeEverything();
 						},
 						afterReceive : function() {
 							//$('#loading').hide(0);
