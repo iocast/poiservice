@@ -1,6 +1,6 @@
 var queryMap = null;
 
-QueryBuilderMap = MapHander.extend({
+var QueryBuilderMap = MapHandler.extend({
 	
 	examples : {
 		'bus_stops_vbz' :	{
@@ -88,7 +88,7 @@ QueryBuilderMap = MapHander.extend({
 		editor.refresh();
 		queryBuilder.parseToUI();
 		*/
-	}
+	},
 	
 });
 
@@ -104,16 +104,14 @@ $(function() {
 	});
 	
 	$(window).resize(function() {
-		$('#sidebar').resizable('option', 'maxWidth', $('#content').width());
-		
-		$('#builder').css({"overflow-y":"auto"});
-		$('#builder').height($(window).height()-$('#header').height()-$('#footer').height());		
-		$('#sidebar').height($('#builder').height());
+		$('section>div').css({"overflow-y":"auto"});
+		$('section>div').height($(window).height()-$('#header').height()-$('#footer').height()-106);
+		$('aside').height($('section>div').height());
 	});
 	
-	$('#builder').height($(window).height()-$('#header').height()-$('#footer').height());
-	$('#builder').css({"overflow-y":"auto"});
-	$('#sidebar').height($('#builder').height());
+	$('section>div').css({"overflow-y":"auto"});
+	$('section>div').height($(window).height()-$('#header').height()-$('#footer').height()-106);
+	$('aside').height($('section>div').height());
 	
 	
 	$(".ui-resizable-w").dblclick(function() {

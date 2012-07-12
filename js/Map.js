@@ -55,7 +55,7 @@ OpenLayers.Layer.MyGML = OpenLayers.Class(OpenLayers.Layer.GML, {
 	}
 });
 
-var MapHander = Class.extend({
+var MapHandler = Class.extend({
 	map : null,
 	EPSG4326 : new OpenLayers.Projection("EPSG:4326"),
 	EPSG900913 : new OpenLayers.Projection("EPSG:900913"),
@@ -173,6 +173,6 @@ var MapHander = Class.extend({
 		}
 		
 		return url;
-	}
+	},
 
 });

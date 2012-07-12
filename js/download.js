@@ -262,7 +262,7 @@ $(function() {
 	/**
 	 * Map and Layer creation
 	 */
-	maphandler = new MapHander();
+	maphandler = new MapHandler();
 	maphandler.createMap();
 	maphandler.addMapnik("OpenStreetMap");
 	
