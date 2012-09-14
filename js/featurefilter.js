@@ -185,7 +185,7 @@ var FeatureFilter = FeatureFilter.extend({
 				}
 				
 				if(feature.attributes['opening_hours'] != 'None') {
-					output += "<br/>Opening hours:" + feature.attributes['opening_hours'];
+					output += "<br/>Opening hours:&nbsp;" + feature.attributes['opening_hours'];
 				}
 				
 				output += '</p>';

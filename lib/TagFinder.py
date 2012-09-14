@@ -35,6 +35,7 @@ class TagFinder(Request):
             self.skos = skos.SkosXmlReader(os.path.dirname(os.path.abspath(__file__))+'/../resources/osm_skos.xml')
             self.skos.read()
 
+            # TODO check special chars
             self.searchQuery = str(self.params['q']).decode('utf-8')
             self.searchLang = self.skos.getLanguageCode(self.searchQuery)
             
