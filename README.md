@@ -1,2 +1,2 @@
-poiservice
+POIService
 ==========
